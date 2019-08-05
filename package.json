@@ -1,7 +1,7 @@
 {
   "name": "@amoy/common",
   "moduleName": "common",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A tool function kit.",
   "main": "dist/common.js",
   "module": "dist/common.es.js",
