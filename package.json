@@ -1,6 +1,6 @@
 {
 	"name": "@amoy/common",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "A tool function kit.",
 	"keywords": [
 		"tool function"
@@ -16,7 +16,7 @@
 		"es": "NODE_ENV=es rollup -c rollup.config.js",
 		"pre": "NODE_ENV=development rollup -c rollup.config.js",
 		"prod": "NODE_ENV=production rollup -c rollup.config.js",
-		"publish": "rm -rf dist && npm-run-all --parallel es pre prod"
+		"build": "rm -rf dist && npm-run-all --parallel es pre prod"
 	},
 	"repository": {
 		"url": "https://github.com/amoyjs/common.git",
@@ -55,10 +55,10 @@
 		"rollup-plugin-typescript": "^1.0.1",
 		"rollup-plugin-uglify": "^6.0.2",
 		"rollup-watch": "^4.3.1",
-		"tslib": "^1.9.3",
+		"tslib": "^1.11.2",
 		"tslint": "^5.16.0",
 		"tslint-react": "^4.0.0",
-		"typescript": "^3.4.5"
+		"typescript": "^3.8.3"
 	},
 	"dependencies": {},
 	"peerDependencies": {}

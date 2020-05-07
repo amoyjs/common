@@ -1,6 +1,7 @@
 export * from "./eventify"
 export * from "./extend"
 export * from "./usesify"
+export * from './performance'
 
 export function type(object: any) {
     const class2type = {}

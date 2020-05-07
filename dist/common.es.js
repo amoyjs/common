@@ -137,6 +137,79 @@ function usesify(addons) {
     };
 }
 
+var drawCalls;
+var fps;
+function catchDraws(app) {
+    var i = 0;
+    app.renderer.addListener('prerender', function () {
+        i = 0;
+    });
+    app.renderer.addListener('postrender', function () {
+        drawCalls = i;
+    });
+    var olGrawElements = app.renderer.gl.drawElements.bind(app.renderer.gl);
+    app.renderer.gl.drawElements = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        i++;
+        return olGrawElements.apply(void 0, args);
+    };
+}
+function catchFPS() {
+    var lastTime = performance.now();
+    var frame = 0;
+    var loop = function () {
+        var now = performance.now();
+        frame++;
+        if (now >= 1000 + lastTime) {
+            fps = Math.round((frame * 1000) / (now - lastTime));
+            frame = 0;
+            lastTime = now;
+        }
+        requestAnimationFrame(loop);
+    };
+    loop();
+}
+function createFPSAndDrawCallsPannel(showFps, showDrawCalls) {
+    var container = document.createElement('div');
+    container.id = 'stats';
+    container.style.cssText = "position:fixed;\n        left: 3rem;\n        pointer-events: none;\n        user-select: none;\n        z-index:10000;\n        color: #fff;\n        font-size: 3rem;\n        line-height: 3rem;";
+    container.innerHTML = "" + (showFps ? "<p id='fps'>fps:</p>" : '') + (showDrawCalls ? "<p id='drawcalls'>drawCalls:</p>" : '');
+    document.body.appendChild(container);
+    var statsContainer = document.querySelector('#stats');
+    var top = window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0);
+    container.style.top = top - 10 + 'px';
+}
+function handlePannelPosition() {
+    var statsContainer = document.querySelector('#stats');
+    setTimeout(function () {
+        var container = document.getElementById('stats');
+        if (container) {
+            container.style.top =
+                window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0) - 10 + 'px';
+        }
+    }, 100);
+}
+function showPerformancePannel(app, enables) {
+    if (enables === void 0) { enables = ["fps", "draw-calls"]; }
+    var showFps = enables.includes("fps");
+    var showDrawCalls = enables.includes("draw-calls");
+    showDrawCalls && catchDraws(app);
+    showFps && catchFPS();
+    createFPSAndDrawCallsPannel(showFps, showDrawCalls);
+    var drawCallContainer = document.querySelector('#drawcalls');
+    var fpsContainer = document.querySelector('#fps');
+    setInterval(function () {
+        drawCalls && drawCallContainer && (drawCallContainer.innerHTML = "drawCalls: " + drawCalls);
+        fps && fpsContainer && (fpsContainer.innerHTML = "fps: " + fps);
+    }, 200);
+    window.addEventListener('resize', function () {
+        handlePannelPosition();
+    });
+}
+
 function type(object) {
     var class2type = {};
     var type = class2type.toString.call(object);
@@ -212,5 +285,5 @@ var setValue = function (tar, key, value) {
     }
 };
 
-export { eventify, extend, forin, getValue, setValue, type, usesify };
+export { eventify, extend, forin, getValue, setValue, showPerformancePannel, type, usesify };
 //# sourceMappingURL=common.es.js.map
