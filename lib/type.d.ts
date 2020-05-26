@@ -1,4 +1,5 @@
 type addon = (core: any) => void
+type performance = 'fps' | 'draw-calls'
 
 declare module '@amoy/common' {
     function forin(object: object, fn: (key?: string, value?: any) => void) : void
@@ -8,5 +9,6 @@ declare module '@amoy/common' {
     function extend(...args) : object
     function eventify(target: object): object
     function usesify(addons: addon | addon[]): ((target: any) => void)
-    function showPerformancePannel(app: any, enables?: ('fps' | 'draw-calls')[])
+    function showPerformancePannel(app: any, enables?: performance[])
+    function showPerformance(enables: performance[]): (event: any) => void
 }
