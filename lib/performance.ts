@@ -12,7 +12,7 @@ function catchDraws(app: any) {
     })
 
     const olGrawElements = app.renderer.gl.drawElements.bind(app.renderer.gl)
-    app.renderer.gl.drawElements = function(...args) {
+    app.renderer.gl.drawElements = (...args: any[]) => {
         i++
         return olGrawElements(...args)
     }
@@ -54,21 +54,20 @@ function createFPSAndDrawCallsPannel(showFps, showDrawCalls) {
 
 function handlePannelPosition() {
     const statsContainer = document.querySelector('#stats')
-    setTimeout(function() {
+    setTimeout(() => {
         const container = document.getElementById('stats')
         if (container) {
-            container.style.top =
-                window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0) - 10 + 'px'
+            container.style.top = window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0) - 10 + 'px'
         }
     }, 100)
 }
 
-export function showPerformancePannel(app: any, enables: string[] = ["fps", "draw-calls"]) {
-    const showFps = enables.includes("fps");
-    const showDrawCalls = enables.includes("draw-calls");
-    showDrawCalls && catchDraws(app);
-    showFps && catchFPS();
-    createFPSAndDrawCallsPannel(showFps, showDrawCalls);
+export function showPerformancePannel(app: any, enables: string[] = ['fps', 'draw-calls']) {
+    const showFps = enables.includes('fps')
+    const showDrawCalls = enables.includes('draw-calls')
+    showDrawCalls && catchDraws(app)
+    showFps && catchFPS()
+    createFPSAndDrawCallsPannel(showFps, showDrawCalls)
 
     const drawCallContainer = document.querySelector('#drawcalls')
     const fpsContainer = document.querySelector('#fps')
@@ -78,7 +77,9 @@ export function showPerformancePannel(app: any, enables: string[] = ["fps", "dra
         fps && fpsContainer && (fpsContainer.innerHTML = `fps: ${fps}`)
     }, 200)
 
-    window.addEventListener('resize', function() {
-        handlePannelPosition()
-    })
+    window.addEventListener('resize', () => handlePannelPosition())
+}
+
+export function showPerformance(enables: string[] = ['fps', 'draw-calls']) {
+    return (event: any) => event.on('created', ({ game }) => showPerformancePannel(game, enables))
 }

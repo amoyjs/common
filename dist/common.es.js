@@ -187,15 +187,14 @@ function handlePannelPosition() {
     setTimeout(function () {
         var container = document.getElementById('stats');
         if (container) {
-            container.style.top =
-                window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0) - 10 + 'px';
+            container.style.top = window.innerHeight - (statsContainer ? statsContainer.clientHeight : 0) - 10 + 'px';
         }
     }, 100);
 }
 function showPerformancePannel(app, enables) {
-    if (enables === void 0) { enables = ["fps", "draw-calls"]; }
-    var showFps = enables.includes("fps");
-    var showDrawCalls = enables.includes("draw-calls");
+    if (enables === void 0) { enables = ['fps', 'draw-calls']; }
+    var showFps = enables.includes('fps');
+    var showDrawCalls = enables.includes('draw-calls');
     showDrawCalls && catchDraws(app);
     showFps && catchFPS();
     createFPSAndDrawCallsPannel(showFps, showDrawCalls);
@@ -205,9 +204,14 @@ function showPerformancePannel(app, enables) {
         drawCalls && drawCallContainer && (drawCallContainer.innerHTML = "drawCalls: " + drawCalls);
         fps && fpsContainer && (fpsContainer.innerHTML = "fps: " + fps);
     }, 200);
-    window.addEventListener('resize', function () {
-        handlePannelPosition();
-    });
+    window.addEventListener('resize', function () { return handlePannelPosition(); });
+}
+function showPerformance(enables) {
+    if (enables === void 0) { enables = ['fps', 'draw-calls']; }
+    return function (event) { return event.on('created', function (_a) {
+        var game = _a.game;
+        return showPerformancePannel(game, enables);
+    }); };
 }
 
 function type(object) {
@@ -284,6 +288,29 @@ var setValue = function (tar, key, value) {
         }
     }
 };
+function getQuery(name) {
+    var search = location.search;
+    var hasSearch = search !== '';
+    var queryString = hasSearch ? search.slice(1) : '';
+    var queries = queryString.split('&');
+    var query = queries.reduce(function (prev, current) {
+        var _a = current.split('='), left = _a[0], right = _a[1];
+        prev[left] = decodeURIComponent(right);
+        return prev;
+    }, {});
+    return query[name];
+}
+function isEmpty(target) {
+    if (typeof target === 'object') {
+        return Object.keys(target).length === 0;
+    }
+    else if (Array.isArray(target) || typeof target === 'string') {
+        return target.length === 0;
+    }
+    else {
+        return false;
+    }
+}
 
-export { eventify, extend, forin, getValue, setValue, showPerformancePannel, type, usesify };
+export { eventify, extend, forin, getQuery, getValue, isEmpty, setValue, showPerformance, showPerformancePannel, type, usesify };
 //# sourceMappingURL=common.es.js.map

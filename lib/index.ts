@@ -77,3 +77,26 @@ export const setValue = (tar: any, key: string, value: any) => {
         }
     }
 }
+
+export function getQuery(name: string) {
+    const search = location.search
+    const hasSearch = search !== ''
+    const queryString = hasSearch ? search.slice(1) : ''
+    const queries = queryString.split('&')
+    const query = queries.reduce((prev: any, current: any) => {
+        const [left, right] = current.split('=')
+        prev[left] = decodeURIComponent(right)
+        return prev
+    }, {})
+    return query[name]
+}
+
+export function isEmpty(target: any) {
+    if (typeof target === 'object') {
+        return Object.keys(target).length === 0
+    } else if (Array.isArray(target) || typeof target === 'string') {
+        return target.length === 0
+    } else {
+        return false
+    }
+}
