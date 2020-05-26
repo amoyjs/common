@@ -9,6 +9,6 @@ declare module '@amoy/common' {
     function extend(...args) : object
     function eventify(target: object): object
     function usesify(addons: addon | addon[]): ((target: any) => void)
-    function showPerformancePannel(app: any, enables?: performance[])
-    function showPerformance(enables: performance[]): (event: any) => void
+    function showPerformancePannel(app: any, enables?: performance[]): void
+    function showPerformance(enables?: performance[]): (event: any) => void
 }
