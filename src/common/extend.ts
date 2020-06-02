@@ -1,28 +1,20 @@
-function isPlainObject(object) {
-    // tslint:disable-next-line: one-variable-per-declaration
-    let proto,
-        ctor,
-        class2type = {},
-        toString = class2type.toString, // Object.prototype.toString
-        hasOwn = class2type.hasOwnProperty,
-        fnToString = hasOwn.toString, // Object.toString/Function.toString
-        ObjectFunctionString = fnToString.call(Object) // 'function Object() { [native code] }'
+function isPlainObject(object: any) {
+    const class2type = {}
+    const toString = class2type.toString
+    const hasOwn = class2type.hasOwnProperty
+    const fnToString = hasOwn.toString
+    const ObjectFunctionString = fnToString.call(Object)
 
-    if (!object || toString.call(object) !== '[object Object]') {
-        return false
-    }
+    if (!object || toString.call(object) !== '[object Object]') return false
 
-    // According to the object created by `Object.create(null)` is no `prototype`
-    proto = Object.getPrototypeOf(object)
-    if (!proto) {
-        return true
-    }
+    const proto = Object.getPrototypeOf(object)
+    if (!proto) return true
 
-    ctor = hasOwn.call(proto, 'constructor') && proto.constructor
+    const ctor = hasOwn.call(proto, 'constructor') && proto.constructor
     return typeof ctor === 'function' && fnToString.call(ctor) === ObjectFunctionString
 }
 
-export function extend(this: any, ...args) {
+export function extend(this: any, ...args: any) {
     let options
     let name
     let clone
