@@ -1,7 +1,7 @@
 {
   "name": "@amoy/common",
   "moduleName": "COMMON",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "common.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
